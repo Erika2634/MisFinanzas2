@@ -1,6 +1,6 @@
 # Mis Finanzas — Gestor de Gastos Personales (con Firebase Firestore)
 
-**Nombre completo del estudiante:** Erika Shirley Arevalo Bernal
+**Nombre :** Erika Shirley Arevalo Bernal
 
 ## Descripción de la aplicación
 
@@ -53,10 +53,10 @@ Cada documento (identificado por un `Document ID` autogenerado) contiene:
 ## Capturas de pantalla
 
 ### Lista de transacciones (sincronizada en tiempo real)
-![Lista de transacciones](screenshots/lista_transacciones.png)
+![Lista de transacciones](/screenshots/Screenshot%202026-08-20%20175543.png)
 
 ### Formulario de registro con validaciones
-![Formulario de registro](screenshots/formulario_registro.png)
+![Formulario de registro](/screenshots/Screenshot%202026-08-20%20232437.png)
 
 ## Tecnologías utilizadas
 
