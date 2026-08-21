@@ -52,7 +52,6 @@ Cada documento (identificado por un `Document ID` autogenerado) contiene:
 
 ## Capturas de pantalla
 
-
 ### Lista de transacciones (sincronizada en tiempo real)
 ![Lista de transacciones](screenshots/lista_transacciones.png)
 
