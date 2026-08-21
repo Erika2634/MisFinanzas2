@@ -2,7 +2,7 @@
 
 **Nombre completo del estudiante:** Erika Shirley Arevalo Bernal
 
-## 📱 Descripción de la aplicación
+## Descripción de la aplicación
 
 **Mis Finanzas** es una aplicación nativa para Android, desarrollada en Java, que permite
 llevar un registro de las finanzas personales del usuario **en tiempo real y en la nube**.
@@ -27,7 +27,7 @@ automáticamente entre cualquier dispositivo conectado a la misma base de datos 
 - **Liberación de memoria**: el `ListenerRegistration` del `SnapshotListener` se libera con
   `.remove()` en `onStop()`/`onDestroy()` de `MainActivity`.
 
-## 🏗️ Arquitectura del proyecto
+## Arquitectura del proyecto
 
 | Clase / Archivo | Responsabilidad |
 |---|---|
@@ -37,7 +37,7 @@ automáticamente entre cualquier dispositivo conectado a la misma base de datos 
 | `MainActivity.java` | Pantalla principal: lista en tiempo real + saldo total + botón para agregar. |
 | `FormActivity.java` | Formulario de creación / edición / eliminación, con validaciones y `TextInputLayout`. |
 
-## 🗄️ Estructura de datos en Firestore
+## Estructura de datos en Firestore
 
 **Colección:** `transacciones`
 
@@ -50,50 +50,8 @@ Cada documento (identificado por un `Document ID` autogenerado) contiene:
 | `tipo` | string | `"Ingreso"` o `"Gasto"` |
 | `fechaCreacion` | timestamp | Se asigna automáticamente al crear el documento (`@ServerTimestamp`) |
 
-## 🔥 Cómo configurar tu propio proyecto de Firebase (PASO OBLIGATORIO)
+## Capturas de pantalla
 
-Este repositorio **no incluye** el archivo `google-services.json` porque contiene
-credenciales específicas de cada proyecto de Firebase. Sin este archivo, la compilación
-fallará. Sigue estos pasos:
-
-1. Ve a [https://console.firebase.google.com](https://console.firebase.google.com) e inicia
-   sesión con tu cuenta de Google.
-2. Haz clic en **Agregar proyecto**, ponle un nombre (ej. `mis-finanzas`) y créalo.
-3. Dentro del proyecto, ve a **Compilación → Firestore Database → Crear base de datos**.
-   Elige **Iniciar en modo de prueba** (esto habilita lectura/escritura abierta por 30 días,
-   suficiente para el desarrollo y la sustentación de esta actividad).
-4. Ve a **Configuración del proyecto** (ícono de engranaje) → pestaña **Tus apps** →
-   haz clic en el ícono de Android para agregar una app.
-5. En **"Nombre del paquete de Android"** escribe exactamente:
-   `com.example.misfinanzas`
-6. Descarga el archivo `google-services.json` que te ofrece Firebase.
-7. Copia ese archivo dentro de la carpeta `app/` de este proyecto (al mismo nivel que
-   `build.gradle` del módulo app), reemplazando cualquier archivo existente.
-8. En Android Studio, sincroniza el proyecto con Gradle (elefante con flecha 🔄, o
-   "Sync Now" si aparece el aviso).
-9. Ejecuta la app. Ya debería guardar y leer datos directamente desde tu proyecto de
-   Firestore en la nube.
-
-> ⚠️ **Nota sobre las reglas de seguridad:** el modo de prueba de Firestore expira a los
-> 30 días. Para uso académico está bien, pero si necesitas reglas permanentes puedes
-> configurar, en la pestaña **Reglas** de Firestore, algo como:
-> ```
-> rules_version = '2';
-> service cloud.firestore {
->   match /databases/{database}/documents {
->     match /transacciones/{documentId} {
->       allow read, write: if true;
->     }
->   }
-> }
-> ```
-> (Esto es solo para pruebas/entrega académica; en producción se debe usar Firebase
-> Authentication y reglas más restrictivas).
-
-## 🖼️ Capturas de pantalla
-
-> Reemplaza las imágenes de la carpeta `/screenshots` por capturas reales de tu app en
-> funcionamiento antes de entregar el repositorio.
 
 ### Lista de transacciones (sincronizada en tiempo real)
 ![Lista de transacciones](screenshots/lista_transacciones.png)
@@ -101,16 +59,7 @@ fallará. Sigue estos pasos:
 ### Formulario de registro con validaciones
 ![Formulario de registro](screenshots/formulario_registro.png)
 
-## ▶️ Cómo ejecutar el proyecto
-
-1. Clona este repositorio.
-2. Sigue la sección **"Cómo configurar tu propio proyecto de Firebase"** de arriba
-   (agrega tu `google-services.json`).
-3. Ábrelo con **Android Studio** y espera a que Gradle sincronice.
-4. Ejecuta la app en un emulador o dispositivo físico con **Android 5.0 (API 21)** o superior
-   y con conexión a internet.
-
-## 🧰 Tecnologías utilizadas
+## Tecnologías utilizadas
 
 - Java
 - Android SDK nativo
