@@ -2,113 +2,113 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="16dp">
 
-        <!-- Concepto: TextInputLayout con contador de caracteres y error en tiempo real -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilConcepto"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <ImageView
+            android:id="@+id/ivPreview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:background="#E0E0E0"
+            android:contentDescription="Vista previa" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Concepto (ej. Almuerzo)"
-            app:counterEnabled="true"
-            app:counterMaxLength="40"
-            app:startIconDrawable="@drawable/ic_concepto"
-            android:layout_marginBottom="16dp">
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="8dp">
 
+            <Button
+                android:id="@+id/btnCamara"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp"
+                android:text="Cámara" />
+
+            <Button
+                android:id="@+id/btnGaleria"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:text="Galería" />
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:errorEnabled="true">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etConcepto"
+                android:id="@+id/etTitulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapSentences"
-                android:maxLength="40" />
+                android:hint="Título del registro" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Monto: TextInputLayout con prefijo $ y validación de negocio en tiempo real -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilMonto"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Monto"
-            app:prefixText="$ "
-            app:startIconDrawable="@drawable/ic_monto"
-            android:layout_marginBottom="8dp">
-
+            app:errorEnabled="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etMonto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:hint="Monto" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilDescripcion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tipo de movimiento"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="4dp" />
-
-        <RadioGroup
-            android:id="@+id/rgTipo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="24dp">
-
-            <RadioButton
-                android:id="@+id/rbIngreso"
-                android:layout_width="wrap_content"
+            app:errorEnabled="true">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDescripcion"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ingreso"
-                android:checked="true"
-                android:layout_marginEnd="24dp" />
+                android:hint="Descripción" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <RadioButton
-                android:id="@+id/rbGasto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Gasto" />
-        </RadioGroup>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGuardar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Guardar"
-            android:paddingTop="14dp"
-            android:paddingBottom="14dp"
-            app:icon="@drawable/ic_guardar"
-            android:layout_marginBottom="12dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnEliminar"
+        <Button
+            android:id="@+id/btnObtenerUbicacion"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Eliminar"
-            android:textColor="@color/color_gasto"
-            app:strokeColor="@color/color_gasto"
-            app:icon="@drawable/ic_eliminar"
-            app:iconTint="@color/color_gasto"
-            android:visibility="gone" />
+            android:text="Capturar Ubicación GPS" />
 
-        <!-- Barra de progreso mostrada mientras se guarda, para evitar doble envío -->
+        <TextView
+            android:id="@+id/tvDireccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:text="Ubicación: No capturada"
+            android:textColor="#555555" />
+
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp"
             android:visibility="gone" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/btnGuardar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Guardar Registro" />
 
+    </LinearLayout>
 </ScrollView>

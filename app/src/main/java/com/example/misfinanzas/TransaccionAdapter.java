@@ -3,109 +3,88 @@ package com.example.misfinanzas;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
-import java.util.Locale;
 
-/**
- * Adapter personalizado que conecta la lista de Transacciones (obtenida
- * en tiempo real desde Firestore mediante un SnapshotListener) con el
- * RecyclerView de la pantalla principal.
- * Usa el patrón ViewHolder para reciclar vistas de forma eficiente.
- */
-public class TransaccionAdapter extends RecyclerView.Adapter<TransaccionAdapter.TransaccionViewHolder> {
+public class TransaccionAdapter extends RecyclerView.Adapter<TransaccionAdapter.ViewHolder> {
 
-    /**
-     * Interfaz para notificar a la Activity cuando el usuario toca un ítem
-     * (por ejemplo, para abrir la pantalla de edición usando su Document ID).
-     */
-    public interface OnItemClickListener {
-        void onItemClick(Transaccion transaccion);
+    public interface OnItemDeleteListener {
+        void onDeleteClick(Transaccion transaccion);
     }
 
-    private List<Transaccion> listaTransacciones;
-    private final OnItemClickListener listener;
+    private final List<Transaccion> transacciones;
+    private final boolean esAdmin;
+    private final OnItemDeleteListener deleteListener;
 
-    public TransaccionAdapter(List<Transaccion> listaTransacciones, OnItemClickListener listener) {
-        this.listaTransacciones = listaTransacciones;
-        this.listener = listener;
-    }
-
-    /**
-     * Reemplaza la lista completa cuando el SnapshotListener de Firestore
-     * notifica un cambio (documento creado, editado o eliminado) y refresca
-     * el RecyclerView.
-     */
-    public void actualizarLista(List<Transaccion> nuevaLista) {
-        this.listaTransacciones = nuevaLista;
-        notifyDataSetChanged();
+    public TransaccionAdapter(List<Transaccion> transacciones, boolean esAdmin, OnItemDeleteListener deleteListener) {
+        this.transacciones = transacciones;
+        this.esAdmin = esAdmin;
+        this.deleteListener = deleteListener;
     }
 
     @NonNull
     @Override
-    public TransaccionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View vista = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_transaccion, parent, false);
-        return new TransaccionViewHolder(vista);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_transaccion, parent, false);
+        return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TransaccionViewHolder holder, int position) {
-        Transaccion transaccion = listaTransacciones.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Transaccion t = transacciones.get(position);
+        holder.tvTitulo.setText(t.getTitulo());
+        holder.tvMonto.setText(String.format(java.util.Locale.getDefault(), "$%.2f", t.getMonto()));
+        holder.tvDireccion.setText(t.getDireccion() != null && !t.getDireccion().isEmpty() ? t.getDireccion() : "Sin ubicación");
 
-        holder.tvConcepto.setText(transaccion.getConcepto());
-        holder.tvTipo.setText(transaccion.getTipo());
-
-        String montoFormateado = String.format(Locale.getDefault(), "$ %,.2f", transaccion.getMonto());
-
-        if (transaccion.esIngreso()) {
-            holder.tvMonto.setText("+ " + montoFormateado);
-            holder.tvMonto.setTextColor(holder.itemView.getContext().getColor(R.color.color_ingreso));
-            holder.frameIcono.setBackgroundResource(R.drawable.circulo_ingreso);
-            holder.ivIcono.setImageResource(R.drawable.ic_ingreso);
+        // Carga eficiente con Glide previniendo bugs de reciclaje
+        if (t.getImageUrl() != null && !t.getImageUrl().isEmpty()) {
+            Glide.with(holder.itemView.getContext())
+                    .load(t.getImageUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(android.R.drawable.ic_menu_gallery)
+                    .error(android.R.drawable.ic_dialog_alert)
+                    .centerCrop()
+                    .into(holder.ivFoto);
         } else {
-            holder.tvMonto.setText("- " + montoFormateado);
-            holder.tvMonto.setTextColor(holder.itemView.getContext().getColor(R.color.color_gasto));
-            holder.frameIcono.setBackgroundResource(R.drawable.circulo_gasto);
-            holder.ivIcono.setImageResource(R.drawable.ic_gasto);
+            holder.ivFoto.setImageResource(android.R.drawable.ic_menu_gallery);
         }
 
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onItemClick(transaccion);
-            }
-        });
+        // Restricción RBAC: Solo el Administrador puede ver el botón de eliminación
+        if (esAdmin) {
+            holder.btnEliminar.setVisibility(View.VISIBLE);
+            holder.btnEliminar.setOnClickListener(v -> {
+                if (deleteListener != null) {
+                    deleteListener.onDeleteClick(t);
+                }
+            });
+        } else {
+            holder.btnEliminar.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return listaTransacciones == null ? 0 : listaTransacciones.size();
+        return transacciones.size();
     }
 
-    /**
-     * ViewHolder: guarda las referencias a las vistas de cada tarjeta
-     * para evitar llamar findViewById repetidamente (optimización de recursos).
-     */
-    static class TransaccionViewHolder extends RecyclerView.ViewHolder {
-        TextView tvConcepto;
-        TextView tvTipo;
-        TextView tvMonto;
-        FrameLayout frameIcono;
-        ImageView ivIcono;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView ivFoto;
+        TextView tvTitulo, tvMonto, tvDireccion;
+        ImageButton btnEliminar;
 
-        public TransaccionViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvConcepto = itemView.findViewById(R.id.tvConcepto);
-            tvTipo = itemView.findViewById(R.id.tvTipo);
-            tvMonto = itemView.findViewById(R.id.tvMonto);
-            frameIcono = itemView.findViewById(R.id.frameIcono);
-            ivIcono = itemView.findViewById(R.id.ivIcono);
+            ivFoto = itemView.findViewById(R.id.ivItemFoto);
+            tvTitulo = itemView.findViewById(R.id.tvItemTitulo);
+            tvMonto = itemView.findViewById(R.id.tvItemMonto);
+            tvDireccion = itemView.findViewById(R.id.tvItemDireccion);
+            btnEliminar = itemView.findViewById(R.id.btnEliminar);
         }
     }
 }

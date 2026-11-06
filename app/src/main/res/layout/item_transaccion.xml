@@ -1,77 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="4dp"
-    android:layout_marginVertical="6dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="@color/white"
-    android:foreground="?attr/selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="16dp">
+        android:padding="8dp">
 
-        <!-- Ícono dentro de un círculo de color: verde para ingreso, rojo para gasto -->
-        <FrameLayout
-            android:id="@+id/frameIcono"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:background="@drawable/circulo_ingreso"
-            android:layout_marginEnd="14dp">
-
-            <ImageView
-                android:id="@+id/ivIcono"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_ingreso"
-                app:tint="@color/white"
-                android:contentDescription="Tipo de movimiento" />
-        </FrameLayout>
+        <ImageView
+            android:id="@+id/ivItemFoto"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:background="#DDDDDD"
+            android:contentDescription="Foto de evidencia" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
 
             <TextView
-                android:id="@+id/tvConcepto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Concepto"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:maxLines="1"
-                android:ellipsize="end" />
-
-            <TextView
-                android:id="@+id/tvTipo"
+                android:id="@+id/tvItemTitulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ingreso"
-                android:textColor="@color/gris_texto"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvItemMonto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#2E7D32"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvItemDireccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:textSize="12sp"
-                android:layout_marginTop="2dp" />
+                android:textColor="#757575"
+                android:maxLines="2" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvMonto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="$ 0.00"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
+        <ImageButton
+            android:id="@+id/btnEliminar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_delete"
+            android:contentDescription="Eliminar registro" />
     </LinearLayout>
-
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>
